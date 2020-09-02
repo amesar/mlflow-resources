@@ -183,6 +183,49 @@ As of MLflow 1.9.1.
 +--------------------------------------+----------+--------------+------------+
 ```
 
+## How do I run a docker container with the MLflow scoring server on my laptop?
+
+**Launch the MLflow tracking server in window 1**
+```
+mlflow server --host 0.0.0.0 --port 5000  \
+  --backend-store-uri sqlite:///mlflow.db \
+  --default-artifact-root $artifact_store $PWD/mlruns
+```
+
+**Create an experiment run in window 2**
+```
+export MLFLOW_TRACKING_URI=http://localhost:5000
+```
+
+```
+mlflow run https://github.com/amesar/mlflow-examples.git#python/sklearn \
+  -P max_depth=2 -P max_leaf_nodes=32 \
+  -P model_name=sklearn_wine \
+  --experiment-name=sklearn_wine
+```
+
+**Launch the MLflow scoring server in window 2**
+```
+mlflow sagemaker build-and-push-container --build --no-push --container sm-wine-sklearn
+
+mlflow sagemaker run-local -m models:/sklearn_wine/1  -p 5001 --image sm-wine-sklearn
+```
+
+
+**Send a prediction to MLflow scoring server in window 3**
+```
+curl  http://localhost:5001/invocations  \
+  -H "Content-Type:application/json" \
+  -d '{ "columns":   [ "alcohol", "chlorides", "citric acid", "density", "fixed acidity", "free sulfur dioxide", "pH", "residual sugar", "sulphates", "total sulfur dioxide", "volatile acidity" ],
+         "data": [
+            [ 7,   0.27, 0.36, 20.7, 0.045, 45, 170, 1.001,  3,    0.45,  8.8 ],
+            [ 6.3, 0.3,  0.34,  1.6, 0.049, 14, 132, 0.994,  3.3,  0.49,  9.5 ] ] }'
+```
+Response
+```
+[5.46875, 5.1716417910447765]
+```
+
 ## Where do I find more of Andre's MLflow stuff?
 
 See:
