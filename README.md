@@ -226,6 +226,10 @@ Response
 [5.46875, 5.1716417910447765]
 ```
 
+## MLflow Database Schema (MySQL)
+
+See [schema_mlflow_1.11.0.sql](schema_mlflow_1.11.0.sql).
+
 ## Where do I find more of Andre's MLflow stuff?
 
 See:
