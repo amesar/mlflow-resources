@@ -2,17 +2,20 @@
 
 
 ## How do I copy an experiment or run from one MLflow tracking server to another?
-I would like to back up or export my experiments (or runs). I would also like to import them into another MLflow workspace (MLflow tracking server).
 
-Unfortunately, there is no official MLflow support for this. 
+I would like to:
+* Back up my experiments, runs or registered models.
+* Copy them into another MLflow tracking server (i.e. Databricks workspace).
+
+There is no official MLflow support for this. 
 
 However, there is an unofficial tool that can export/import an experiment/run with caveats for Databricks MLflow using the [public MLflow API](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html).
 
-See https://github.com/amesar/mlflow-tools/tree/master/mlflow_tools/export_import.
+See https://github.com/amesar/mlflow-export-import.
 
-It works well for OSS MLflow. 
-
-Unfortunately for Databricks MLflow, there is currently no API call to export notebook revisions (each run has a pointer to a notebook revision). However, the model artifacts and metadata are faithfully exported.
+TLDR:
+* It works well for OSS MLflow. 
+* Unfortunately for Databricks MLflow, there is currently no API call to export notebook revisions (each run has a pointer to a notebook revision). However, the model artifacts and metadata are correctly exported.
 
 ## How do I find the best run of an experiment?
 Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_runs) method. A simple example is shown below where we look for the run with the lowest `RMSE` value.
