@@ -186,6 +186,21 @@ As of MLflow 1.9.1.
 +--------------------------------------+----------+--------------+------------+
 ```
 
+## How do I create an MLflow run from a model I have trained elsewhere?
+
+```
+import mlflow
+import cloudpickle
+
+with open("data/model.pkl", "rb") as f:
+    model = cloudpickle.load(f)
+with mlflow.start_run() as run:
+    mlflow.sklearn.log_model(model, "sklearn-model")
+model_uri = f"runs:/{run.info.run_id}/sklearn-model"
+model = mlflow.sklearn.load_model(model_uri)
+```
+
+
 ## How do I run a docker container with the MLflow scoring server on my laptop?
 
 **Launch the MLflow tracking server in window 1**
@@ -237,5 +252,6 @@ See [schema_mlflow_1.11.0.sql](schema_mlflow_1.11.0.sql).
 
 See:
 * https://github.com/amesar/mlflow-examples - examples of many different ML frameworks (sklearn, SparkML, Keras/TensorFlow, etc.) and Scala examples.
+* https://github.com/amesar/mlflow-export-import - Tools to export and import MLflow runs, experiments or registered models from one tracking server to another.
 * https://github.com/amesar/mlflow-tools - tools and utilities such as export/import runs.
 * https://github.com/amesar/mlflow-spark-summit-2019 - code for Spark Summit 2019 tutorial session. Dated.
