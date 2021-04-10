@@ -246,7 +246,7 @@ Response
 
 ## MLflow Database Schema (MySQL)
 
-See [schema_mlflow_1.12.1.sql](schema_mlflow_1.12.1.sql).
+See [schema_mlflow_1.15.0.sql](schema_mlflow_1.15.0.sql).
 
 ## Where do I find more of Andre's MLflow stuff?
 
