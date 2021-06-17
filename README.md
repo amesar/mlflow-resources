@@ -260,5 +260,5 @@ Github code:
 * https://github.com/amesar/mlflow-spark-summit-2019 - code for Spark Summit 2019 tutorial session - obviously dated.
 
 Slides:
-* [MLflow Model Serving](https://www.slideshare.net/amesar0/mlflow-model-serving-dais-2021) - DAIS 2021 - 2021-05-27
+* [MLflow Model Serving](https://databricks.com/session_na21/mlflow-model-serving) - DAIS 2021 - 2021-05-27 - [slideshare](https://www.slideshare.net/amesar0/mlflow-model-serving-dais-2021) 
 * [ONNX and MLflow](https://www.slideshare.net/amesar0/onnx-overview-and-mlflow) - Spark Meetup - 2020-02-26
