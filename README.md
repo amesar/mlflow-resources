@@ -159,11 +159,11 @@ Total: bytes: 41282 artifacts: 7
 Tag keys that start with mlflow. are reserved for internal use. See [System Tags](https://mlflow.org/docs/latest/tracking.html#system-tags) documentation page.
 
 Column legend:
-* python - if you run with normal Python 
-* mlflow run - If you run with mlflow runcommand
+* python - if you run with the normal `python` command
+* mlflow run - If you run with `mlflow run` command
 * notebook - If run as a Databricks notebook
 
-As of MLflow 1.9.1.
+As of MLflow 1.18.0
 ```
 +--------------------------------------+----------+--------------+------------+
 | tag                                  | python   | mlflow run   | notebook   |
@@ -179,6 +179,8 @@ As of MLflow 1.9.1.
 | mlflow.project.entryPoint            | _        | Y            | _          |
 | mlflow.project.env                   | _        | Y            | _          |
 | mlflow.databricks.cluster.id         | _        | _            | Y          |
+| mlflow.databricks.cluster.info       | _        | _            | Y          |
+| mlflow.databricks.cluster.libraries  | _        | _            | Y          |
 | mlflow.databricks.notebookID         | _        | _            | Y          |
 | mlflow.databricks.notebookPath       | _        | _            | Y          |
 | mlflow.databricks.notebookRevisionID | _        | _            | Y          |
@@ -223,9 +225,16 @@ mlflow run https://github.com/amesar/mlflow-examples.git#python/sklearn \
 ```
 
 **Launch the MLflow scoring server in window 2**
+
+Plain docker
+```
+mlflow models build-docker --model-uri models:/sklearn_wine/1 --name dk-wine-sklearn
+docker run --p 5001:8080 dk-wine-sklearn
+```
+
+SageMaker docker container in local mode
 ```
 mlflow sagemaker build-and-push-container --build --no-push --container sm-wine-sklearn
-
 mlflow sagemaker run-local -m models:/sklearn_wine/1  -p 5001 --image sm-wine-sklearn
 ```
 
