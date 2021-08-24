@@ -1,7 +1,9 @@
 # MLflow FAQ
 
 
-## How do I copy an experiment or run from one MLflow tracking server to another?
+## General MLflow
+
+### How do I copy an experiment or run from one MLflow tracking server to another?
 
 I would like to:
 * Back up my experiments, runs or registered models.
@@ -17,7 +19,7 @@ TLDR:
 * It works well for OSS MLflow. 
 * Unfortunately for Databricks MLflow, there is currently no API call to export notebook revisions (each run has a pointer to a notebook revision). However, the model artifacts and metadata are correctly exported.
 
-## How do I find the best run of an experiment?
+### How do I find the best run of an experiment?
 Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_runs) method. A simple example is shown below where we look for the run with the lowest `RMSE` value.
 
 ```
@@ -31,7 +33,7 @@ fc9337b500054dc7869f7611a74e3c62', 0.7367947360663162
 
 For a full-fledged version that accounts for nested runs see [Find best run for experiment](https://github.com/amesar/mlflow-tools/blob/master/mlflow_tools/tools/README.md#find-best-run-for-experiment) and [best_run.py](https://github.com/amesar/mlflow-tools/blob/master/mlflow_tools/tools/best_run.py).
 
-## How do I dump all experiment or run information?
+### How do I dump all experiment or run information?
 
 I would like to see all the information of an experiment or run.
 
@@ -151,10 +153,7 @@ Artifacts:
 Total: bytes: 41282 artifacts: 7
 ```
 
-
-
-
-## What are the MLflow system run tags?
+### What are the MLflow system run tags?
 
 Tag keys that start with mlflow. are reserved for internal use. See [System Tags](https://mlflow.org/docs/latest/tracking.html#system-tags) documentation page.
 
@@ -188,7 +187,7 @@ As of MLflow 1.18.0
 +--------------------------------------+----------+--------------+------------+
 ```
 
-## How do I create an MLflow run from a model I have trained elsewhere?
+### How do I create an MLflow run from a model I have trained elsewhere?
 
 ```
 import mlflow
@@ -202,8 +201,7 @@ model_uri = f"runs:/{run.info.run_id}/sklearn-model"
 model = mlflow.sklearn.load_model(model_uri)
 ```
 
-
-## How do I run a docker container with the MLflow scoring server on my laptop?
+### How do I run a docker container with the MLflow scoring server on my laptop?
 
 **Launch the MLflow tracking server in window 1**
 ```
@@ -253,7 +251,7 @@ Response
 [5.46875, 5.1716417910447765]
 ```
 
-## MLflow Database Schema (MySQL)
+### MLflow Database Schema (MySQL)
 
 See [schema_mlflow_1.15.0.sql](schema_mlflow_1.15.0.sql).
 
@@ -317,6 +315,81 @@ Works only for SparkML (MLlib) models.
 
 Do the same as above using the Python `MlflowClient.download_artifacts` method.
 
+## Databricks MLflow
+
+### How do I access Databricks MLflow from outside Databricks?
+
+There are several ways run the MLflow CLI or API against a managed Databricks MLflow tracking server.
+
+There are several ways to externally access managed Databricks MLflow. The following information applies to both the MLflow CLI and programmatic access.
+
+See the Databricks documentation page Access the MLflow tracking server from outside Azure Databricks - AWS or Azure.
+
+1. With .~/databrickscfg and no profile specified. The host and token are picked up from the DEFAULT profile.
+```
+export MLFLOW_TRACKING_URI=databricks
+```
+2. Specify profile in  ~/.databrickscfg.
+```
+export MLFLOW_TRACKING_URI=databricks://MY_PROFILE
+```
+3. To override ~/.databrickscfg values or without ~/.databrickscfg file.
+```
+export MLFLOW_TRACKING_URI=databricks
+export DATABRICKS_HOST=https://myshard.cloud.databricks.com
+export DATABRICKS_TOKEN=MY_TOKEN
+```
+
+### DBFS vs Fusemount file paths with MLflow
+
+MLflow API methods do not understand DBFS file paths. You need to use the Fusemount version starting with `/dbfs` instead of `dbfs:`.
+
+Use:
+```
+tf.keras.models.save_model(model, "/dbfs/mymodel.keras")
+```
+instead of:
+```
+tf.keras.models.save_model(model, "dbfs:/mymodel.keras")
+```
+
+### Specify non-DBFS artifact location for an experiment
+
+In Databricks MLflow, the default location for artifacts is DBFS. This location is specified at the experiment level. You can provide an alternate artifact location assuming there is a corresponding artifact plugin. 
+
+There are two major limitations to custom non-DBFS locations:
+* The artifact will not appear in the UI.
+* You cannot promote the model artifact to the model registry.
+
+
+Open source MLflow documentation
+
+* [Artifact Stores](https://mlflow.org/docs/latest/tracking.html#artifact-stores) - Supported plugins: Amazon S3 and S3-compatible storage, Azure Blob Storage, Google Cloud Storage, FTP server, SFTP Server, NFS and HDFS.
+
+* [mlflow.create_experiment](https://mlflow.org/docs/latest/python_api/mlflow.html#mlflow.create_experiment) - Python API.
+
+Create workspace experiment - Databricks MLflow documentation
+
+* [AWS](https://docs.databricks.com/applications/mlflow/tracking.html#create-workspace-experiment) - Databricks supports DBFS, S3, and Azure Blob storage artifact locations.
+
+* [Azure](https://docs.microsoft.com/en-us/azure/databricks/applications/mlflow/tracking#create-workspace-experiment) - Azure Databricks supports DBFS and Azure Blob storage artifact locations. Note there is no ADLS support.
+
+### What are the Databricks MLflow API rate limits?
+
+#### MLflow Tracking Server rate limits 
+
+* [AWS](https://docs.databricks.com/dev-tools/api/latest/mlflow.html#rate-limits) - [Azure](https://docs.microsoft.com/en-us/azure/databricks/dev-tools/api/latest/mlflow#rate-limits) - rate limits - Databricks documentation
+* Low throughput experiment management (list, update, delete, restore): 7 qps
+* Search runs: 7 qps
+* Log batch: 47 qps
+* All other APIs: 127 qps
+
+#### MLflow Model Serving on Databricks
+
+* [AWS](https://docs.databricks.com/applications/mlflow/model-serving.html#mlflow-model-serving-on-databricks) - [Azure](https://docs.microsoft.com/en-us/azure/databricks/applications/mlflow/model-serving) - rate limits - Databricks documentation
+* Target throughput is 20 QPS.
+* Target availability is 99.5%, although no guarantee is made as to either.
+* Payload size limit of 16 MB per request.
 
 ## Where do I find more of Andre's MLflow stuff?
 
