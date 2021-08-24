@@ -257,17 +257,79 @@ Response
 
 See [schema_mlflow_1.15.0.sql](schema_mlflow_1.15.0.sql).
 
+## MLflow Java Client
+
+### MLflow Java Client Documentation
+
+Unfortunately there is only the [Javadoc](https://mlflow.org/docs/latest/java_api/index.html).
+There are no examples in [MLflow examples github](https://github.com/mlflow/mlflow/tree/master/examples).
+
+### MLflow Scala Client
+
+MLflow has a Java client that can be accessed from Scala.
+
+Sample Scala code using the Java client: [github.com/amesar/mlflow-examples/tree/master/scala/sparkml](github.com/amesar/mlflow-examples/tree/master/scala/sparkml).
+
+### MLflow Java Feature Gap
+
+Since much of MLflow functionality is client-based and is written in Python, there is a distinct feature gap for other languages.  Standard MLflow features such as projects and flavors are not supported for Java/Scala. Basically this is since there is so little demand for JVM-based ML training vs Python. See item below. 
+
+### Does the Java client support MLflow projects and flavors?
+
+No. With the Java client you have to save your models as un-managed artifacts using [logArtifact](https://mlflow.org/docs/latest/java_api/org/mlflow/tracking/MlflowClient.html#logArtifact-java.lang.String-java.io.File-). There is no concept of MLflow Python’s log_model (e.g. [mlflow.sklearn.log_model](https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html#mlflow.sklearn.log_model) which implies flavors. 
+See example in [TrainWine.scala](https://github.com/amesar/mlflow-examples/blob/master/scala/sparkml/src/main/scala/org/andre/mlflow/examples/wine/sparkml/TrainWine.scala#L118).
+
+### Python set_experiment() equivalent
+
+See [MLflowUtils.getOrCreateExperimentId](https://github.com/amesar/mlflow-examples/blob/master/scala/sparkml/src/main/scala/org/andre/mlflow/util/MLflowUtils.scala#L24).
+
+```
+// Return the ID of an experiment - create it if it doesn't exist
+def getOrCreateExperimentId(client: MlflowClient, experimentName: String) = {
+  try { 
+    client.createExperiment(experimentName)
+  } catch { 
+    case e: org.mlflow.tracking.MlflowHttpException => { // statusCode 400
+      client.getExperimentByName(experimentName).get.getExperimentId
+    } 
+  } 
+} 
+```
+
+### How do I score a model in Scala that was saved in Python?
+
+Works only for SparkML (MLlib) models.
+
+Read the model artifact with the `downloadArtifacts` method.
+```
+import org.apache.spark.ml.PipelineModel
+import org.mlflow.tracking.MlflowClient
+
+val client = new MlflowClient()
+val modelPath = client.downloadArtifacts(runId, "spark-model/sparkml").getAbsolutePath
+val model = PipelineModel.load(modelPath.replace("/dbfs","dbfs:"))
+val predictions = model.transform(data)
+```
+
+### How do I score a model in Python that was saved in Scala?
+
+Works only for SparkML (MLlib) models.
+
+Do the same as above using the Python `MlflowClient.download_artifacts` method.
+
+
 ## Where do I find more of Andre's MLflow stuff?
 
-Github code:
-* https://github.com/amesar/mlflow-examples - examples of many different Python ML frameworks (sklearn, SparkML, Keras/TensorFlow, etc.) and some Scala examples.
-* https://github.com/amesar/mlflow-export-import - tools to export and import MLflow runs, experiments or registered models from one tracking server to another.
-* https://github.com/amesar/mlflow-tools - tools and utilities such as export/import runs.
+**Github code**
+* https://github.com/amesar/mlflow-examples - Examples of many different Python ML frameworks (sklearn, SparkML, Keras/TensorFlow, etc.) and some Scala examples.
+* https://github.com/amesar/mlflow-export-import - Tools to export and import MLflow runs, experiments or registered models from one tracking server to another.
+* https://github.com/amesar/mlflow-tools - Tools and utilities such as export/import runs.
 * https://github.com/amesar/mlflow-tensorflow-serving - creates a TensorFlow Serving Docker container with an embedded MLflow Keras TensorFlow model.
-* https://github.com/amesar/mlflow-pluggable-scoring-server - exploratory POC to plug in custom request or response payloads for MLflow serving.
-* https://github.com/amesar/mleap-sampler - all things MLeap (with MLflow too)- Scala and Python.
-* https://github.com/amesar/mlflow-spark-summit-2019 - code for Spark Summit 2019 tutorial session - obviously dated.
+* https://github.com/amesar/mlflow-pluggable-scoring-server - Exploratory POC to plug in custom request or response payloads for MLflow serving.
+* https://github.com/amesar/mlflow-spark-summit-2019 - Code for Spark Summit 2019 tutorial session - obviously dated.
+* https://github.com/amesar/mleap-sampler - All things MLeap (with MLflow too)- Scala and Python.
 
-Slides:
+**Slides**
 * [MLflow Model Serving](https://databricks.com/session_na21/mlflow-model-serving) - DAIS 2021 - 2021-05-27 - [slideshare](https://www.slideshare.net/amesar0/mlflow-model-serving-dais-2021) 
 * [ONNX and MLflow](https://www.slideshare.net/amesar0/onnx-overview-and-mlflow) - Spark Meetup - 2020-02-26
+
