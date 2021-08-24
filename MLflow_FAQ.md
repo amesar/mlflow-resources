@@ -323,7 +323,7 @@ There are several ways run the MLflow CLI or API against a managed Databricks ML
 
 There are several ways to externally access managed Databricks MLflow. The following information applies to both the MLflow CLI and programmatic access.
 
-See the Databricks documentation page Access the MLflow tracking server from outside Azure Databricks - AWS or Azure.
+See the Databricks documentation page `Access the MLflow tracking server from outside Databricks` - [AWS](https://docs.databricks.com/applications/mlflow/access-hosted-tracking-server.html) or [Azure](https://docs.microsoft.com/en-us/azure/databricks/applications/mlflow/access-hosted-tracking-server).
 
 1. With .~/databrickscfg and no profile specified. The host and token are picked up from the DEFAULT profile.
 ```
