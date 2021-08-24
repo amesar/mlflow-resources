@@ -19,6 +19,23 @@ TLDR:
 * It works well for OSS MLflow. 
 * Unfortunately for Databricks MLflow, there is currently no API call to export notebook revisions (each run has a pointer to a notebook revision). However, the model artifacts and metadata are correctly exported.
 
+### How do I create an MLflow run from a model I have trained elsewhere?
+
+```
+import mlflow
+import cloudpickle
+
+with open("data/model.pkl", "rb") as f:
+    model = cloudpickle.load(f)
+with mlflow.start_run() as run:
+    mlflow.sklearn.log_model(model, "sklearn-model")
+model_uri = f"runs:/{run.info.run_id}/sklearn-model"
+model = mlflow.sklearn.load_model(model_uri)
+```
+
+Also see: [MLflow Model Registry — Registering a Saved Model](https://mlflow.org/docs/latest/model-registry.html#registering-a-saved-model) - MLflow documentation.
+
+
 ### How do I find the best run of an experiment?
 Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_runs) method. A simple example is shown below where we look for the run with the lowest `RMSE` value.
 
@@ -187,19 +204,19 @@ As of MLflow 1.18.0
 +--------------------------------------+----------+--------------+------------+
 ```
 
-### How do I create an MLflow run from a model I have trained elsewhere?
+### What’s the difference between log_model and save_model?
 
-```
-import mlflow
-import cloudpickle
+`log_model` saves a model in a location relative to the experiment’s [artifact location](https://mlflow.org/docs/latest/python_api/mlflow.html#mlflow.create_experiment). With `save_model` you specify an absolute path. Both methods are flavor-specific. Definitely prefer `log_model`. In order to use the standard `load_model` method you have to use `log_model`.
 
-with open("data/model.pkl", "rb") as f:
-    model = cloudpickle.load(f)
-with mlflow.start_run() as run:
-    mlflow.sklearn.log_model(model, "sklearn-model")
-model_uri = f"runs:/{run.info.run_id}/sklearn-model"
-model = mlflow.sklearn.load_model(model_uri)
-```
+See the [sklearn](https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html) flavor sample methods:
+  * [log_model](https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html#mlflow.sklearn.log_model)
+  * [save_model](https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html#mlflow.sklearn.save_model)
+  * [load_model](https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html#mlflow.sklearn.load_model)
+
+### Examples of MLflow Custom Python Models
+
+* [Custom Python Models](https://mlflow.org/docs/latest/models.html#custom-python-models) - MLflow documentation
+* Example: https://github.com/mlflow/mlflow/blob/master/examples/prophet/train.py
 
 ### How do I run a docker container with the MLflow scoring server on my laptop?
 
