@@ -357,6 +357,24 @@ export DATABRICKS_HOST=https://myshard.cloud.databricks.com
 export DATABRICKS_TOKEN=MY_TOKEN
 ```
 
+### Databricks MLflow operation modes
+
+There are several ways you can train and track your model with Databricks MLflow tracking server.
+
+
+![](images/databricks/MLflow_Operation_Modes.png)
+
+Three main components are:
+* Coding - where you write your code - non-Databricks (IDE or Jupyter notebook) or Databricks notebook.
+* Training - where the training is executed.
+* Tracking - on which MLflow Tracking Server the run is logged.
+
+Options:
+* Option 0 - Coding, training and tracking are all done in a non-Databricks open source environment (e.g laptop or on-prem).
+* Option 1 - Coding, training and tracking are all done in a Databricks environment.
+* Option 2 - Coding and training are done on laptop and tracking is done on Databricks.
+* Option 3 - Coding is done on laptop but training and tracking are done on Databricks.
+
 ### DBFS vs Fusemount file paths with MLflow
 
 MLflow API methods do not understand DBFS file paths. You need to use the Fusemount version starting with `/dbfs` instead of `dbfs:`.
