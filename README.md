@@ -4,6 +4,7 @@
 * [MLflow FAQ](MLflow_FAQ.md)
 * [Slide Decks](slides)
   * [MLflow Model Serving](slides/MLflow_Model_Serving_DAIS_2021.pdf) - Data + AI Summit 2021 - 2021-05-27
+  * [MLflow and MLeap](slides/MLflow_and_MLeap.pdf) - 2019-12-03
 
 ## Github Repositories
 * https://github.com/amesar/mlflow-examples  
