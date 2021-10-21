@@ -36,6 +36,21 @@ model = mlflow.sklearn.load_model(model_uri)
 Also see: [MLflow Model Registry — Registering a Saved Model](https://mlflow.org/docs/latest/model-registry.html#registering-a-saved-model) - MLflow documentation.
 
 
+### How to get the run_id of your run
+
+Use `run_id` instead of `run_uuid` which is deprecated. No need to use `active_run` either.
+
+Use this idiom:
+```
+with mlflow.start_run() as run:
+   run_id = run.info.run_id
+```
+Instead of this: 
+```
+with mlflow.start_run():
+   run_id = mlflow.active_run().info.run_uuid
+```
+
 ### How do I find the best run of an experiment?
 Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_runs) method. A simple example is shown below where we look for the run with the lowest `RMSE` value.
 
