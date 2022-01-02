@@ -65,11 +65,14 @@ fc9337b500054dc7869f7611a74e3c62', 0.7367947360663162
 
 For a full-fledged version that accounts for nested runs see [Find best run for experiment](https://github.com/amesar/mlflow-tools/blob/master/mlflow_tools/tools/README.md#find-best-run-for-experiment) and [best_run.py](https://github.com/amesar/mlflow-tools/blob/master/mlflow_tools/tools/best_run.py).
 
-### How do I dump all experiment or run information?
+### How do I dump run, experiment or registered model information?
 
 I would like to see all the information of an experiment or run.
 
-You can use the mlflow CLI command to get basic run details.
+#### MLflow CLI
+
+The mlflow CLI can dump run information but not experiment or registered model information.
+
 ```
 mlflow runs describe --run-id
 ```
@@ -116,9 +119,11 @@ mlflow runs describe --run-id
   }
 }
 ```
-If you want to get a consolidated experiment report with artifacts details use the custom tools below. 
 
+#### mlflow-tools
 
+The dump commands of mlflow-tools provides you information in JSON, YAML and text formats for runs. For experiments and models only JSON is supported.
+The value-add for dumping runs with the tool is that it can dump all the of run's artifact information.
 See [Dump experiment or run as text](https://github.com/amesar/mlflow-tools/blob/master/mlflow_tools/tools/README.md#dump-experiment-or-run-as-text).
 
 ```
@@ -187,7 +192,7 @@ Total: bytes: 41282 artifacts: 7
 
 ### What are the MLflow system run tags?
 
-Tag keys that start with mlflow. are reserved for internal use. See [System Tags](https://mlflow.org/docs/latest/tracking.html#system-tags) documentation page.
+Tag keys that start with `mlflow.` are reserved for internal use. See [System Tags](https://mlflow.org/docs/latest/tracking.html#system-tags) documentation page.
 
 Column legend:
 * python - if you run with the normal `python` command
@@ -285,7 +290,7 @@ Response
 
 ### MLflow Database Schema (MySQL)
 
-See [schema_mlflow_1.15.0.sql](schema_mlflow_1.15.0.sql).
+See [schema_mlflow_1.22.0.sql](schema_mlflow_1.22.0.sql).
 
 ## MLflow Java Client
 

@@ -71,7 +71,7 @@ CREATE TABLE `metrics` (
   `timestamp` bigint(20) NOT NULL,
   `run_uuid` varchar(32) NOT NULL,
   `step` bigint(20) NOT NULL DEFAULT '0',
-  `is_nan` tinyint(1) NOT NULL,
+  `is_nan` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`key`,`timestamp`,`step`,`run_uuid`,`value`,`is_nan`),
   KEY `run_uuid` (`run_uuid`),
   CONSTRAINT `metrics_ibfk_1` FOREIGN KEY (`run_uuid`) REFERENCES `runs` (`run_uuid`)
@@ -195,4 +195,4 @@ CREATE TABLE `tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
--- Dump completed on 2021-04-10 14:15:06
+-- Dump completed on 2022-01-02 13:54:36
