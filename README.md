@@ -1,16 +1,17 @@
 # MLflow Resources 
 
-## Basic
+## Basic Content
 * [MLflow FAQ](MLflow_FAQ.md)
 * [Slide Decks](slides)
   * [MLflow Model Serving](slides/MLflow_Model_Serving_DAIS_2021.pdf) - Data + AI Summit 2021 - 2021-05-27
+  * [Databricks MLflow Object Relationships](slides/Databricks_MLflow_Object_Relationships.pdf) - 2022-01-02
   * [MLflow and MLeap](slides/MLflow_and_MLeap.pdf) - 2019-12-03
 
 ## Github Repositories
+* https://github.com/amesar/mlflow-export-import 
+  - MLflow tools to export and import MLflow runs, experiments or registered models from one tracking server to another.
 * https://github.com/amesar/mlflow-examples  
    - Examples of many different ML frameworks (Scikit-learn, SparkML, Keras/TensorFlow, etc.) and Scala examples.
-* https://github.com/amesar/mlflow-export-import 
-  - Tools to export and import MLflow runs, experiments or registered models from one tracking server to another.
 * https://github.com/amesar/mlflow-tools  
   - Tools and utilities.
 * https://github.com/amesar/mlflow-tensorflow-serving
