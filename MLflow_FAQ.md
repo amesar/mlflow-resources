@@ -57,14 +57,30 @@ Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlf
 ```
 import mlflow
 client = mlflow.tracking.MlflowClient()
-runs = client.search_runs(experiment_id, order_by=["metrics.rmse ASC"], max_results=1)
-best_run = runs[0]
+
+def get_best_run(experiment_id)
+    runs = client.search_runs(experiment_id, order_by=["metrics.rmse ASC"], max_results=1)
+    return runs[0]
+
+best_run = get_best_run("3532228")
 print(best_run.info.run_id, best_run.data.metrics["rmse"])
+
 fc9337b500054dc7869f7611a74e3c62', 0.7367947360663162
 ```
 
 For a full-fledged version that accounts for nested runs see [Find best run for experiment](https://github.com/amesar/mlflow-tools/blob/master/mlflow_tools/tools/README.md#find-best-run-for-experiment) and [best_run.py](https://github.com/amesar/mlflow-tools/blob/master/mlflow_tools/tools/best_run.py).
 
+### How do I find the last run of an experiment?
+
+Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_runs) method. 
+```
+import mlflow
+client = mlflow.tracking.MlflowClient()
+
+def get_last_run(experiment_id):
+    runs = client.search_runs(experiment_id, order_by=["attributes.start_time desc"], max_results=1)
+    return runs[0]
+```
 ### How do I dump run, experiment or registered model information?
 
 I would like to see all the information of an experiment or run.
