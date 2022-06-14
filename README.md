@@ -8,7 +8,7 @@
   * [MLflow and MLeap](slides/MLflow_and_MLeap.pdf) - 2019-12-03
 
 ## Github Repositories
-* https://github.com/amesar/mlflow-export-import 
+* https://github.com/mlflow/mlflow-export-import 
   - MLflow tools to export and import MLflow runs, experiments or registered models from one tracking server to another.
 * https://github.com/amesar/mlflow-examples  
    - Examples of many different ML frameworks (Scikit-learn, SparkML, Keras/TensorFlow, etc.) and Scala examples.
