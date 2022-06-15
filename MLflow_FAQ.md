@@ -368,6 +368,39 @@ Works only for SparkML (MLlib) models.
 
 Do the same as above using the Python `MlflowClient.download_artifacts` method.
 
+### Searching for MLflow objects - XX
+
+MLflow allows you to search for a subset of MLflow objects. The MLflow search filter is a simplified version of the SQL WHERE clause. 
+
+You can search for the following MLflow objects:
+* Runs
+* Registered Models
+* Versions of a Registered Model
+
+#### Search runs
+
+General
+* [Search — MLflow 1.26.1 documentation](https://mlflow.org/docs/latest/search-syntax.html)  - Detailed description of the filter syntax for run search.
+
+[mlflow package](https://mlflow.org/docs/latest/python_api/mlflow.html)
+* search_runs - returns a list of Pandas DataFrames.
+* Note: no description or link of/to filter syntax. Just some examples.
+
+[mlflow.tracking package](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html)
+* [search_runs](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_runs) - returns a paged list of [Run](https://mlflow.org/docs/latest/python_api/mlflow.entities.html#mlflow.entities.Run) objects.
+* Note: no description or link of/to filter syntax. Just some examples.
+
+#### Search registered models and versions
+
+[mlflow.tracking package](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html)
+* [search_registered_models](XX) - returns a paged list of RegisteredModel objects.
+  * filter_string – Filter query string, defaults to searching all registered models. Currently, it supports only a single filter condition as the name of the model, for example, name = 'model_name' or a search expression to match a pattern in the registered model name. For example, name LIKE 'Boston%' (case sensitive) or name ILIKE '%boston%'.
+* [search_model_versions](XX) - returns a paged list of ModelVersion objects.
+  * filter_string – A filter string expression. Currently, it supports a single filter condition either a name of model like name = 'model_name' or run_id = '...'.
+
+Search experiments
+Not available. :(
+
 ## Databricks MLflow
 
 ### How do I access Databricks MLflow from outside Databricks?
