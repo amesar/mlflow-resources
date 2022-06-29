@@ -11,7 +11,7 @@ I would like to:
 
 There is no official MLflow support for this. 
 
-However, there is an unofficial tool that can export/import an experiment/run with caveats for Databricks MLflow using the [public MLflow API](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html).
+However, there is a tool that can export/import an experiment/run with caveats for Databricks MLflow using the [public MLflow API](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html).
 
 See https://github.com/mlflow/mlflow-export-import.
 
@@ -206,38 +206,48 @@ Artifacts:
 Total: bytes: 41282 artifacts: 7
 ```
 
-### What are the MLflow system run tags?
+### What are MLflow system run tags?
 
-Tag keys that start with `mlflow.` are reserved for internal use. See [System Tags](https://mlflow.org/docs/latest/tracking.html#system-tags) documentation page.
+Tag keys that start with `mlflow.` are reserved for internal use. 
+See [System Tags](https://mlflow.org/docs/latest/tracking.html#system-tags) documentation page. 
+Note that Databricks system tags are not documented on this page.
 
 Column legend:
-* python - if you run with the normal `python` command
-* mlflow run - If you run with `mlflow run` command
-* notebook - If run as a Databricks notebook
+* Python - If run is created with plain old `python` command (OSS MLflow).
+* MLflow project - If run is created as an MLflow project with `mlflow run` command (OSS MLflow).
+* Notebook UI - If run is created from a Databricks notebook (either notebook or workspace experiment).
+* Notebook job - If run is created from a Databricks notebook job (must be a workspace experiment).
 
-As of MLflow 1.18.0
+As of MLflow 1.27.0.
 ```
-+--------------------------------------+----------+--------------+------------+
-| tag                                  | python   | mlflow run   | notebook   |
-|--------------------------------------+----------+--------------+------------|
-| mlflow.log-model.history             | Y        | Y            | Y          |
-| mlflow.runName                       | Y        | Y            | Y          |
-| mlflow.source.name                   | Y        | Y            | Y          |
-| mlflow.source.type                   | Y        | Y            | Y          |
-| mlflow.user                          | Y        | Y            | Y          |
-| mlflow.source.git.commit             | Y        | Y            | _          |
-| mlflow.gitRepoURL                    | _        | Y            | _          |
-| mlflow.project.backend               | _        | Y            | _          |
-| mlflow.project.entryPoint            | _        | Y            | _          |
-| mlflow.project.env                   | _        | Y            | _          |
-| mlflow.databricks.cluster.id         | _        | _            | Y          |
-| mlflow.databricks.cluster.info       | _        | _            | Y          |
-| mlflow.databricks.cluster.libraries  | _        | _            | Y          |
-| mlflow.databricks.notebookID         | _        | _            | Y          |
-| mlflow.databricks.notebookPath       | _        | _            | Y          |
-| mlflow.databricks.notebookRevisionID | _        | _            | Y          |
-| mlflow.databricks.webappURL          | _        | _            | Y          |
-+--------------------------------------+----------+--------------+------------+
++--------------------------------------+----------+------------------+---------------+----------------+
+| Tag                                  | Python   | MLflow project   | Notebook UI   | Notebook job   |
+|--------------------------------------+----------+------------------+---------------+----------------|
+| mlflow.databricks.cluster.id         | -        | -                | Y             | Y              |
+| mlflow.databricks.cluster.info       | -        | -                | Y             | Y              |
+| mlflow.databricks.cluster.libraries  | -        | -                | Y             | Y              |
+| mlflow.databricks.jobID              | -        | -                | -             | Y              |
+| mlflow.databricks.jobRunID           | -        | -                | -             | Y              |
+| mlflow.databricks.jobType            | -        | -                | -             | Y              |
+| mlflow.databricks.notebook.commandID | -        | -                | Y             | Y              |
+| mlflow.databricks.notebookID         | -        | -                | Y             | -              |
+| mlflow.databricks.notebookPath       | -        | -                | Y             | -              |
+| mlflow.databricks.notebookRevisionID | -        | -                | Y             | -              |
+| mlflow.databricks.webappURL          | -        | -                | Y             | Y              |
+| mlflow.databricks.workspaceID        | -        | -                | Y             | Y              |
+| mlflow.databricks.workspaceURL       | -        | -                | Y             | Y              |
+| mlflow.gitRepoURL                    | -        | Y                | -             | -              |
+| mlflow.log-model.history             | Y        | Y                | -             | -              |
+| mlflow.project.backend               | -        | Y                | -             | -              |
+| mlflow.project.entryPoint            | -        | Y                | -             | -              |
+| mlflow.project.env                   | -        | Y                | -             | -              |
+| mlflow.runName                       | Y        | Y                | Y             | Y              |
+| mlflow.source.git.commit             | Y        | Y                | -             | -              |
+| mlflow.source.git.repoURL            | -        | Y                | -             | -              |
+| mlflow.source.name                   | Y        | Y                | Y             | Y              |
+| mlflow.source.type                   | Y        | Y                | Y             | Y              |
+| mlflow.user                          | Y        | Y                | -             | -              |
++--------------------------------------+----------+------------------+---------------+----------------+
 ```
 
 ### What’s the difference between log_model and save_model?
