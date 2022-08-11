@@ -378,7 +378,7 @@ Works only for SparkML (MLlib) models.
 
 Do the same as above using the Python `MlflowClient.download_artifacts` method.
 
-### Searching for MLflow objects - XX
+### Searching for MLflow objects
 
 MLflow allows you to search for a subset of MLflow objects. The MLflow search filter is a simplified version of the SQL WHERE clause. 
 
@@ -403,9 +403,9 @@ General
 #### Search registered models and versions
 
 [mlflow.tracking package](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html)
-* [search_registered_models](XX) - returns a paged list of RegisteredModel objects.
+* [search_registered_models](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_registered_models) - returns a paged list of RegisteredModel objects.
   * filter_string – Filter query string, defaults to searching all registered models. Currently, it supports only a single filter condition as the name of the model, for example, name = 'model_name' or a search expression to match a pattern in the registered model name. For example, name LIKE 'Boston%' (case sensitive) or name ILIKE '%boston%'.
-* [search_model_versions](XX) - returns a paged list of ModelVersion objects.
+* [search_model_versions](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_model_versions) - returns a paged list of ModelVersion objects.
   * filter_string – A filter string expression. Currently, it supports a single filter condition either a name of model like name = 'model_name' or run_id = '...'.
 
 Search experiments
