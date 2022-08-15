@@ -52,7 +52,7 @@ with mlflow.start_run():
 ```
 
 ### How do I find the best run of an experiment?
-Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_runs) method. A simple example is shown below where we look for the run with the lowest `RMSE` value.
+Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_runs) method. A simple example is shown below where we look for the run with the lowest `RMSE` value.
 
 ```
 import mlflow
@@ -72,7 +72,7 @@ For a full-fledged version that accounts for nested runs see [Find best run for 
 
 ### How do I find the last run of an experiment?
 
-Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_runs) method. 
+Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_runs) method. 
 ```
 import mlflow
 client = mlflow.tracking.MlflowClient()
@@ -397,19 +397,19 @@ General
 * Note: no description or link of/to filter syntax. Just some examples.
 
 [mlflow.tracking package](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html)
-* [search_runs](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_runs) - returns a paged list of [Run](https://mlflow.org/docs/latest/python_api/mlflow.entities.html#mlflow.entities.Run) objects.
+* [search_runs](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_runs) - returns a paged list of [Run](https://mlflow.org/docs/latest/python_api/mlflow.entities.html#mlflow.entities.Run) objects.
 * Note: no description or link of/to filter syntax. Just some examples.
 
 #### Search registered models and versions
 
 [mlflow.tracking package](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html)
-* [search_registered_models](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_registered_models) - returns a paged list of RegisteredModel objects.
+* [search_registered_models](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_registered_models) - returns a paged list of RegisteredModel objects.
   * filter_string – Filter query string, defaults to searching all registered models. Currently, it supports only a single filter condition as the name of the model, for example, name = 'model_name' or a search expression to match a pattern in the registered model name. For example, name LIKE 'Boston%' (case sensitive) or name ILIKE '%boston%'.
-* [search_model_versions](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html#mlflow.tracking.MlflowClient.search_model_versions) - returns a paged list of ModelVersion objects.
+* [search_model_versions](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_model_versions) - returns a paged list of ModelVersion objects.
   * filter_string – A filter string expression. Currently, it supports a single filter condition either a name of model like name = 'model_name' or run_id = '...'.
 
-Search experiments
-Not available. :(
+#### Search experiments
+Available now in MLflow 1.28.0.
 
 ## Databricks MLflow
 
