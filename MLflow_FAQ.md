@@ -11,7 +11,7 @@ I would like to:
 
 There is no official MLflow support for this. 
 
-However, there is a tool that can export/import an experiment/run with caveats for Databricks MLflow using the [public MLflow API](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html).
+However, there is a tool that can export/import an experiment/run with caveats for Databricks MLflow using the [public MLflow API](https://mlflow.org/docs/latest/python_api/mlflow.client.html).
 
 See https://github.com/mlflow/mlflow-export-import.
 
@@ -56,7 +56,7 @@ Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlf
 
 ```
 import mlflow
-client = mlflow.tracking.MlflowClient()
+client = mlflow.client.MlflowClient()
 
 def get_best_run(experiment_id)
     runs = client.search_runs(experiment_id, order_by=["metrics.rmse ASC"], max_results=1)
@@ -75,7 +75,7 @@ For a full-fledged version that accounts for nested runs see [Find best run for 
 Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_runs) method. 
 ```
 import mlflow
-client = mlflow.tracking.MlflowClient()
+client = mlflow.client.MlflowClient()
 
 def get_last_run(experiment_id):
     runs = client.search_runs(experiment_id, order_by=["attributes.start_time desc"], max_results=1)
@@ -209,7 +209,7 @@ Total: bytes: 41282 artifacts: 7
 ### What are MLflow system run tags?
 
 Tag keys that start with `mlflow.` are reserved for internal use. 
-See [System Tags](https://mlflow.org/docs/latest/tracking.html#system-tags) documentation page. 
+See [System Tags](https://mlflow.org/docs/latest/client.html#system-tags) documentation page. 
 Note that Databricks system tags are not documented on this page.
 
 Column legend:
@@ -337,7 +337,7 @@ Since much of MLflow functionality is client-based and is written in Python, the
 
 ### Does the Java client support MLflow projects and flavors?
 
-No. With the Java client you have to save your models as un-managed artifacts using [logArtifact](https://mlflow.org/docs/latest/java_api/org/mlflow/tracking/MlflowClient.html#logArtifact-java.lang.String-java.io.File-). There is no concept of MLflow Python’s log_model (e.g. [mlflow.sklearn.log_model](https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html#mlflow.sklearn.log_model) which implies flavors. 
+No. With the Java client you have to save your models as un-managed artifacts using [logArtifact](https://mlflow.org/docs/latest/java_api/org/mlflow.client/MlflowClient.html#logArtifact-java.lang.String-java.io.File-). There is no concept of MLflow Python’s log_model (e.g. [mlflow.sklearn.log_model](https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html#mlflow.sklearn.log_model) which implies flavors. 
 See example in [TrainWine.scala](https://github.com/amesar/mlflow-examples/blob/master/scala/sparkml/src/main/scala/org/andre/mlflow/examples/wine/sparkml/TrainWine.scala#L118).
 
 ### Python set_experiment() equivalent
@@ -350,7 +350,7 @@ def getOrCreateExperimentId(client: MlflowClient, experimentName: String) = {
   try { 
     client.createExperiment(experimentName)
   } catch { 
-    case e: org.mlflow.tracking.MlflowHttpException => { // statusCode 400
+    case e: org.mlflow.client.MlflowHttpException => { // statusCode 400
       client.getExperimentByName(experimentName).get.getExperimentId
     } 
   } 
@@ -364,7 +364,7 @@ Works only for SparkML (MLlib) models.
 Read the model artifact with the `downloadArtifacts` method.
 ```
 import org.apache.spark.ml.PipelineModel
-import org.mlflow.tracking.MlflowClient
+import org.mlflow.client.MlflowClient
 
 val client = new MlflowClient()
 val modelPath = client.downloadArtifacts(runId, "spark-model/sparkml").getAbsolutePath
@@ -396,13 +396,13 @@ General
 * search_runs - returns a list of Pandas DataFrames.
 * Note: no description or link of/to filter syntax. Just some examples.
 
-[mlflow.tracking package](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html)
+[mlflow.client package](https://mlflow.org/docs/latest/python_api/mlflow.client.html)
 * [search_runs](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_runs) - returns a paged list of [Run](https://mlflow.org/docs/latest/python_api/mlflow.entities.html#mlflow.entities.Run) objects.
 * Note: no description or link of/to filter syntax. Just some examples.
 
 #### Search registered models and versions
 
-[mlflow.tracking package](https://mlflow.org/docs/latest/python_api/mlflow.tracking.html)
+[mlflow.client package](https://mlflow.org/docs/latest/python_api/mlflow.client.html)
 * [search_registered_models](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_registered_models) - returns a paged list of RegisteredModel objects.
   * filter_string – Filter query string, defaults to searching all registered models. Currently, it supports only a single filter condition as the name of the model, for example, name = 'model_name' or a search expression to match a pattern in the registered model name. For example, name LIKE 'Boston%' (case sensitive) or name ILIKE '%boston%'.
 * [search_model_versions](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_model_versions) - returns a paged list of ModelVersion objects.
@@ -478,15 +478,15 @@ There are two major limitations to custom non-DBFS locations:
 
 Open source MLflow documentation
 
-* [Artifact Stores](https://mlflow.org/docs/latest/tracking.html#artifact-stores) - Supported plugins: Amazon S3 and S3-compatible storage, Azure Blob Storage, Google Cloud Storage, FTP server, SFTP Server, NFS and HDFS.
+* [Artifact Stores](https://mlflow.org/docs/latest/client.html#artifact-stores) - Supported plugins: Amazon S3 and S3-compatible storage, Azure Blob Storage, Google Cloud Storage, FTP server, SFTP Server, NFS and HDFS.
 
 * [mlflow.create_experiment](https://mlflow.org/docs/latest/python_api/mlflow.html#mlflow.create_experiment) - Python API.
 
 Create workspace experiment - Databricks MLflow documentation
 
-* [AWS](https://docs.databricks.com/applications/mlflow/tracking.html#create-workspace-experiment) - Databricks supports DBFS, S3, and Azure Blob storage artifact locations.
+* [AWS](https://docs.databricks.com/applications/mlflow.client.html#create-workspace-experiment) - Databricks supports DBFS, S3, and Azure Blob storage artifact locations.
 
-* [Azure](https://docs.microsoft.com/en-us/azure/databricks/applications/mlflow/tracking#create-workspace-experiment) - Azure Databricks supports DBFS and Azure Blob storage artifact locations. Note there is no ADLS support.
+* [Azure](https://docs.microsoft.com/en-us/azure/databricks/applications/mlflow.client#create-workspace-experiment) - Azure Databricks supports DBFS and Azure Blob storage artifact locations. Note there is no ADLS support.
 
 ### What are the Databricks MLflow API rate limits?
 
