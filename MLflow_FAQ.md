@@ -316,7 +316,7 @@ Response
 
 ### MLflow Database Schema (MySQL)
 
-See [schema_mlflow_1.27.0.sql](schema_mlflow_1.27.0.sql).
+See [schema_mlflow_1.28.0.sql](schema_mlflow_1.28.0.sql).
 
 ## MLflow Java Client
 
