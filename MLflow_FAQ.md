@@ -21,6 +21,7 @@ TLDR:
 
 ### How do I create an MLflow run from a model I have trained elsewhere?
 
+For example, if you have create an sklearn model outside of MLflow, you can import it as an MLflow run with the following code.
 ```
 import mlflow
 import cloudpickle
