@@ -506,6 +506,27 @@ Create workspace experiment - Databricks MLflow documentation
 * Target availability is 99.5%, although no guarantee is made as to either.
 * Payload size limit of 16 MB per request.
 
+### How do I log a Delta table and version in MLflow?
+
+This feature is supported only in Spark 3. 
+
+Code:
+```
+import mlflow.spark
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.config("spark.jars.packages", "org.mlflow.mlflow-spark").getOrCreate()
+mlflow.spark.autolog()
+```
+
+This will automatically log all Delta tables and their versions in the `sparkDatasourceInfo` tag.  An example of the tag value:
+
+```
+path=dbfs:REDACTED_LOCAL_PART@databricks.com/mlflow_demo/wine-quality.csv,format=text
+```
+
+Sample Databricks notebook: [Tracking ML Model Training with MLflow and Delta Lake
+](https://docs.databricks.com/_static/notebooks/mlflow/mlflow-delta-training.html).
+
 ## Where do I find more of Andre's MLflow stuff?
 
 **Github code**
