@@ -508,7 +508,7 @@ Create workspace experiment - Databricks MLflow documentation
 
 ### How do I log a Delta table and version in MLflow?
 
-This feature is supported only in Spark 3. 
+You can log the Delta tables you use for training in the `sparkDatasourceInfo` tag.
 
 Code:
 ```
