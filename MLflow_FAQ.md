@@ -326,6 +326,8 @@ See [schema_mlflow_1.28.0.sql](schema_mlflow_1.28.0.sql).
 Unfortunately there is only the [Javadoc](https://mlflow.org/docs/latest/java_api/index.html).
 There are no examples in [MLflow examples github](https://github.com/mlflow/mlflow/tree/master/examples).
 
+You can find some Scala examples at [mlflow-examples - scala-spark](https://github.com/amesar/mlflow-examples/tree/master/scala/sparkml).
+
 ### MLflow Scala Client
 
 MLflow has a Java client that can be accessed from Scala.
@@ -334,12 +336,16 @@ Sample Scala code using the Java client: [github.com/amesar/mlflow-examples/tree
 
 ### MLflow Java Feature Gap
 
-Since much of MLflow functionality is client-based and is written in Python, there is a distinct feature gap for other languages.  Standard MLflow features such as projects and flavors are not supported for Java/Scala. Basically this is since there is so little demand for JVM-based ML training vs Python. See item below. 
+* Since much of MLflow functionality is client-based and is written in Python, there is a feature gap for other languages.  
+* Standard MLflow features such as MLflow projects, models and  flavors are not supported for Java/Scala. 
+* This is principally due less demand for JVM-based ML training vs Python. 
+* You can save your native model as a raw artifact but cannot log it as a managed MLflow model.
+* See item below. 
 
-### Does the Java client support MLflow projects and flavors?
+### Does the Java client support MLflow projects, moels  and flavors?
 
 No. With the Java client you have to save your models as un-managed artifacts using [logArtifact](https://mlflow.org/docs/latest/java_api/org/mlflow.client/MlflowClient.html#logArtifact-java.lang.String-java.io.File-). There is no concept of MLflow Python’s log_model (e.g. [mlflow.sklearn.log_model](https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html#mlflow.sklearn.log_model) which implies flavors. 
-See example in [TrainWine.scala](https://github.com/amesar/mlflow-examples/blob/master/scala/sparkml/src/main/scala/org/andre/mlflow/examples/wine/sparkml/TrainWine.scala#L118).
+See example in [TrainWine.scala](https://github.com/amesar/mlflow-examples/blob/master/scala/sparkml/src/main/scala/org/andre/mlflow/examples/wine/sparkml/TrainWine.scala).
 
 ### Python set_experiment() equivalent
 
