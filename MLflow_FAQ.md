@@ -21,20 +21,37 @@ TLDR:
 
 ### How do I create an MLflow run from a model I have trained elsewhere?
 
-For example, if you have create an sklearn model outside of MLflow, you can import it as an MLflow run with the following code.
+Steps:
+* Create a new MLflow run.
+* Load the native model.
+* Log the the native model as an MLflow model in the MLflow run.
+
+Also see: [MLflow Model Registry — Registering a Saved Model](https://mlflow.org/docs/latest/model-registry.html#registering-a-saved-model) - MLflow documentation.
+
+#### Scikit-learn example
+
 ```
 import mlflow
 import cloudpickle
 
-with open("data/model.pkl", "rb") as f:
+with open("scikit-model.pkl", "rb") as f:
     model = cloudpickle.load(f)
 with mlflow.start_run() as run:
-    mlflow.sklearn.log_model(model, "sklearn-model")
-model_uri = f"runs:/{run.info.run_id}/sklearn-model"
-model = mlflow.sklearn.load_model(model_uri)
+    mlflow.sklearn.log_model(model, "model")
 ```
 
-Also see: [MLflow Model Registry — Registering a Saved Model](https://mlflow.org/docs/latest/model-registry.html#registering-a-saved-model) - MLflow documentation.
+#### TensorFlow Keras example
+
+See [tensorflow.keras.models.load_model](https://www.tensorflow.org/api_docs/python/tf/keras/models/load_model).
+
+```
+import mlflow
+import tensorflow as tf
+
+model = tf.keras.models.load_model("tf_keras_model")
+with mlflow.start_run() as run:
+    mlflow.keras.log_model(model, "model")
+```
 
 
 ### How to get the run_id of your run
