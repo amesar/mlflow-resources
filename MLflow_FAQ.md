@@ -224,48 +224,60 @@ Artifacts:
 Total: bytes: 41282 artifacts: 7
 ```
 
-### What are MLflow system run tags?
+### What are the MLflow system run tags?
 
-Tag keys that start with `mlflow.` are reserved for internal use. 
-See [System Tags](https://mlflow.org/docs/latest/client.html#system-tags) documentation page. 
-Note that Databricks system tags are not documented on this page.
+Overview
+* MLflow runs can be created in a various number of ways - OSS (as project or no projecy) or Databricks (job, notebook UI, Repo). 
+ Each different run type has its set of system tags.
+* Tag keys that start with `mlflow.` are reserved for internal use. Databricks system tags start with `mlflow.databricks`.
+* See the System Tags documentation page or  https://github.com/mlflow/mlflow/blob/master/mlflow/utils/mlflow_tags.py.
 
-Column legend:
-* Python - If run is created with plain old `python` command (OSS MLflow).
-* MLflow project - If run is created as an MLflow project with `mlflow run` command (OSS MLflow).
-* Notebook UI - If run is created from a Databricks notebook (either notebook or workspace experiment).
-* Notebook job - If run is created from a Databricks notebook job (must be a workspace experiment).
+Column legend for the different kinds of runs:
+* OSS MLflow
+  * Python - without MLproject. Run is created with plain python command without an MLproject file.
+  * Project -  with MLproject. Run is created with an MLproject file using the `mlflow run` command.
+* Databricks
+  * NB UI - Notebook UI. Run is created from a Databricks notebook (either notebook or workspace experiment) in the UI.
+  * NB job - Notebook job. Run is created from a Databricks notebook job (must be a workspace experiment).
+  * Repo - Run is created from a Databricks Repo notebook in the UI.
 
-As of MLflow 1.27.0.
+As of MLflow 1.30.0:
 ```
-+--------------------------------------+----------+------------------+---------------+----------------+
-| Tag                                  | Python   | MLflow project   | Notebook UI   | Notebook job   |
-|--------------------------------------+----------+------------------+---------------+----------------|
-| mlflow.databricks.cluster.id         | -        | -                | Y             | Y              |
-| mlflow.databricks.cluster.info       | -        | -                | Y             | Y              |
-| mlflow.databricks.cluster.libraries  | -        | -                | Y             | Y              |
-| mlflow.databricks.jobID              | -        | -                | -             | Y              |
-| mlflow.databricks.jobRunID           | -        | -                | -             | Y              |
-| mlflow.databricks.jobType            | -        | -                | -             | Y              |
-| mlflow.databricks.notebook.commandID | -        | -                | Y             | Y              |
-| mlflow.databricks.notebookID         | -        | -                | Y             | -              |
-| mlflow.databricks.notebookPath       | -        | -                | Y             | -              |
-| mlflow.databricks.notebookRevisionID | -        | -                | Y             | -              |
-| mlflow.databricks.webappURL          | -        | -                | Y             | Y              |
-| mlflow.databricks.workspaceID        | -        | -                | Y             | Y              |
-| mlflow.databricks.workspaceURL       | -        | -                | Y             | Y              |
-| mlflow.gitRepoURL                    | -        | Y                | -             | -              |
-| mlflow.log-model.history             | Y        | Y                | -             | -              |
-| mlflow.project.backend               | -        | Y                | -             | -              |
-| mlflow.project.entryPoint            | -        | Y                | -             | -              |
-| mlflow.project.env                   | -        | Y                | -             | -              |
-| mlflow.runName                       | Y        | Y                | Y             | Y              |
-| mlflow.source.git.commit             | Y        | Y                | -             | -              |
-| mlflow.source.git.repoURL            | -        | Y                | -             | -              |
-| mlflow.source.name                   | Y        | Y                | Y             | Y              |
-| mlflow.source.type                   | Y        | Y                | Y             | Y              |
-| mlflow.user                          | Y        | Y                | -             | -              |
-+--------------------------------------+----------+------------------+---------------+----------------+
++----------------------------------------+--------+---------+-------+--------+------+
+| Tag                                    | Python | Project | NB UI | NB job | Repo |
++----------------------------------------+----------+---------+-------+--------+----+
+| mlflow.databricks.cluster.id           | -      | -       | y     | y      | y    |
+| mlflow.databricks.cluster.info         | -      | -       | y     | y      | y    |
+| mlflow.databricks.cluster.libraries    | -      | -       | y     | y      | y    |
+| mlflow.databricks.jobID                | -      | -       | -     | y      | -    |
+| mlflow.databricks.jobRunID             | -      | -       | -     | y      | -    |
+| mlflow.databricks.jobType              | -      | -       | -     | y      | -    |
+| mlflow.databricks.notebook.commandID   | -      | -       | y     | y      | y    |
+| mlflow.databricks.notebookID           | -      | -       | y     | -      | y    |
+| mlflow.databricks.notebookPath         | -      | -       | y     | -      | y    |
+| mlflow.databricks.notebookRevisionID   | -      | -       | y     | -      | -    |
+| mlflow.databricks.webappURL            | -      | -       | y     | y      | -    |
+| mlflow.databricks.workspaceID          | -      | -       | y     | y      | y    |
+| mlflow.databricks.workspaceURL         | -      | -       | y     | y      | y    |
+| mlflow.databricks.gitRepoCommit        | -      | -       | -     | -      | y    |
+| mlflow.databricks.gitRepoProvider      | -      | -       | -     | -      | y    |
+| mlflow.databricks.gitRepoReference     | -      | -       | -     | -      | y    |
+| mlflow.databricks.gitRepoReferenceType | -      | -       | -     | -      | y    |
+| mlflow.databricks.gitRepoRelativePath  | -      | -       | -     | -      | y    |
+| mlflow.databricks.gitRepoStatus        | -      | -       | -     | -      | y    |
+| mlflow.databricks.gitRepoUrl           | -      | -       | -     | -      | y    |
+| mlflow.gitRepoURL                      | -      | y       | -     | -      | -    |
+| mlflow.log-model.history               | y      | y       | -     | -      | y    |
+| mlflow.project.backend                 | -      | y       | -     | -      | -    |
+| mlflow.project.entryPoint              | -      | y       | -     | -      | -    |
+| mlflow.project.env                     | -      | y       | -     | -      | -    |
+| mlflow.runName                         | y      | y       | y     | y      | y    |
+| mlflow.source.git.commit               | y      | y       | -     | -      | -    |
+| mlflow.source.git.repoURL              | -      | y       | -     | -      | -    |
+| mlflow.source.name                     | y      | y       | y     | y      | y    |
+| mlflow.source.type                     | y      | y       | y     | y      | y    |
+| mlflow.user                            | y      | y       | -     | -      | y    |
++----------------------------------------+--------+---------+-------+--------+------+
 ```
 
 ### What’s the difference between log_model and save_model?
