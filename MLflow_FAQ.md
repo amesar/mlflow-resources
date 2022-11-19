@@ -227,14 +227,18 @@ Total: bytes: 41282 artifacts: 7
 ### What are the MLflow system run tags?
 
 Overview
-* MLflow runs can be created in a various number of ways - OSS (as project or no projecy) or Databricks (job, notebook UI, Repo). 
- Each different run type has its set of system tags.
+* MLflow runs can be created in a various number of ways - OSS (as project or no project) or Databricks (job, notebook UI, Repo). 
+* MLflow runs can be created in a various number of ways:
+  * Open source (OSS) - as project or no project.
+  * Databricks - notebook UI,  n0tebook job or Databricks Repo.
+* Each different run type has its own set of system tags.
+* System tag keys start with `mlflow.` and are reserved for internal use. Databricks system tags start with `mlflow.databricks`.
 * Tag keys that start with `mlflow.` are reserved for internal use. Databricks system tags start with `mlflow.databricks`.
-* See the System Tags documentation page or  https://github.com/mlflow/mlflow/blob/master/mlflow/utils/mlflow_tags.py.
+* See the System Tags documentation page and https://github.com/mlflow/mlflow/blob/master/mlflow/utils/mlflow_tags.py.
 
 Column legend for the different kinds of runs:
 * OSS MLflow
-  * Python - without MLproject. Run is created with plain python command without an MLproject file.
+  * Python - without MLproject. Run is created using plain python command without an MLproject file.
   * Project -  with MLproject. Run is created with an MLproject file using the `mlflow run` command.
 * Databricks
   * NB UI - Notebook UI. Run is created from a Databricks notebook (either notebook or workspace experiment) in the UI.
