@@ -535,7 +535,7 @@ Create workspace experiment - Databricks MLflow documentation
 
 ### What are the Databricks MLflow API rate limits?
 
-#### MLflow Tracking Server rate limits 
+#### MLflow Tracking Server rate limits
 
 * [AWS](https://docs.databricks.com/dev-tools/api/latest/mlflow.html#rate-limits) - [Azure](https://docs.microsoft.com/en-us/azure/databricks/dev-tools/api/latest/mlflow#rate-limits) - rate limits - Databricks documentation
 * Low throughput experiment management (list, update, delete, restore): 7 qps
@@ -543,12 +543,23 @@ Create workspace experiment - Databricks MLflow documentation
 * Log batch: 47 qps
 * All other APIs: 127 qps
 
-#### MLflow Model Serving on Databricks
+#### MLflow Serverless Model Serving on Databricks (v2)
 
-* [AWS](https://docs.databricks.com/applications/mlflow/model-serving.html#mlflow-model-serving-on-databricks) - [Azure](https://docs.microsoft.com/en-us/azure/databricks/applications/mlflow/model-serving) - rate limits - Databricks documentation
+Limitations ([AWS](https://docs.databricks.com/mlflow/serverless-real-time-inference.html#limitations) - [Azure](https://learn.microsoft.com/en-us/azure/databricks/mlflow/serverless-real-time-inference#limitations) - GCP (not yet)):
+* Payload size limit of 16 MB per request.
+* Default limit of 200 QPS of scoring requests per workspace enrolled. You can increase this limit to up to 3000 QPS per workspace by reaching out to your Databricks support contact.
+* Best effort support on less than 100 millisecond latency overhead and availability.
+
+#### MLflow Classic Model Serving on Databricks (v1) - deprecated
+
+Rate limits [AWS](https://docs.databricks.com/applications/mlflow/model-serving.html#mlflow-model-serving-on-databricks) - [Azure](https://docs.microsoft.com/en-us/azure/databricks/applications/mlflow/model-serving):
 * Target throughput is 20 QPS.
 * Target availability is 99.5%, although no guarantee is made as to either.
 * Payload size limit of 16 MB per request.
+
+#### MLflow and Databricks Repos Limitations
+
+See the [CI/CD and MLOps](https://docs.databricks.com/repos/limits.html#cicd-and-mlops) section of the [Limits & FAQ for Git integration with Databricks Repos](https://docs.databricks.com/repos/limits.html) documentation page.
 
 ### How do I log a Delta table and version in MLflow?
 
