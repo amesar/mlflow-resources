@@ -99,6 +99,13 @@ def get_last_run(experiment_id):
     runs = client.search_runs(experiment_id, order_by=["attributes.start_time desc"], max_results=1)
     return runs[0]
 ```
+### How do I change a run's attributes?
+
+As a system of record, for the most part an MLflow is immutable. The only run fields you can change are:
+ * [update_run](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.update_run) - update the run.info.status
+ * [set_tag()](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.set_tag) - change a run tag
+ * [log_artifact()](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.log_artifact) - add an artifact to an existing run
+
 ### How do I dump run, experiment or registered model information?
 
 I would like to see all the information of an experiment or run.
