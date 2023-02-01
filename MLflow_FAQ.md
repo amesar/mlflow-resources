@@ -359,7 +359,7 @@ Response
 ### MLflow Database Schema (MySQL)
 
 Schemas:
-* [schema_mlflow_2.0.1.sql](database_schemas/schema_mlflow_2.0.1.sql)
+* [schema_mlflow_2.1.1.sql](database_schemas/schema_mlflow_2.1.1.sql)
 * [schema_mlflow_1.30.0.sql](database_schemas/schema_mlflow_1.30.0.sql)
 * [schema_mlflow_1.28.0.sql](database_schemas/schema_mlflow_1.28.0.sql)
 * [schema_mlflow_1.22.0.sql](database_schemas/schema_mlflow_1.22.0.sql)
