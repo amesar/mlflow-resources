@@ -74,7 +74,7 @@ Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlf
 
 ```
 import mlflow
-client = mlflow.client.MlflowClient()
+client = mlflow.MlflowClient()
 
 def get_best_run(experiment_id)
     runs = client.search_runs(experiment_id, order_by=["metrics.rmse ASC"], max_results=1)
@@ -93,7 +93,7 @@ For a full-fledged version that accounts for nested runs see [Find best run for 
 Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_runs) method. 
 ```
 import mlflow
-client = mlflow.client.MlflowClient()
+client = mlflow.MlflowClient()
 
 def get_last_run(experiment_id):
     runs = client.search_runs(experiment_id, order_by=["attributes.start_time desc"], max_results=1)
