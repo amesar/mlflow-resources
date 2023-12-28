@@ -1,5 +1,6 @@
 # MLflow FAQ
 
+Last updated: 2023-12-28.
 
 ## General MLflow
 
@@ -9,15 +10,10 @@ I would like to:
 * Back up my experiments, runs or registered models.
 * Copy them into another MLflow tracking server (i.e. Databricks workspace).
 
-There is no official MLflow support for this. 
-
-However, there is a tool that can export/import an experiment/run with caveats for Databricks MLflow using the [public MLflow API](https://mlflow.org/docs/latest/python_api/mlflow.client.html).
+There is a tool that can export/import an experiment/run with caveats for Databricks MLflow using the [public MLflow API](https://mlflow.org/docs/latest/python_api/mlflow.client.html).
 
 See https://github.com/mlflow/mlflow-export-import.
 
-TLDR:
-* It works well for OSS MLflow. 
-* Unfortunately for Databricks MLflow, there is currently no API call to export notebook revisions (each run has a pointer to a notebook revision). However, the model artifacts and metadata are correctly exported.
 
 ### How do I create an MLflow run from a model I have trained elsewhere?
 
@@ -356,16 +352,19 @@ Response
 [5.46875, 5.1716417910447765]
 ```
 
-### MLflow Database Schema (MySQL)
+### MLflow Database Schema 
 
-Schemas:
-* [schema_mlflow_2.4.1.sql](database_schemas/schema_mlflow_2.4.1.sql)
-* [schema_mlflow_2.3.1.sql](database_schemas/schema_mlflow_2.3.1.sql)
-* [schema_mlflow_2.2.2.sql](database_schemas/schema_mlflow_2.2.2.sql)
-* [schema_mlflow_2.1.1.sql](database_schemas/schema_mlflow_2.1.1.sql)
-* [schema_mlflow_1.30.0.sql](database_schemas/schema_mlflow_1.30.0.sql)
-* [schema_mlflow_1.28.0.sql](database_schemas/schema_mlflow_1.28.0.sql)
-* [schema_mlflow_1.22.0.sql](database_schemas/schema_mlflow_1.22.0.sql)
+|Version | Database |
+|-----|-------|
+| [schema_mlflow_2.9.2.sql](database_schemas/sqlite/schema_mlflow_2.9.2.sql) | Sqlite |
+| [schema_mlflow_2.4.1.sql](database_schemas/mysql/schema_mlflow_2.4.1.sql) | MySQL |
+| [schema_mlflow_2.3.1.sql](database_schemas/mysql/schema_mlflow_2.3.1.sql) | MySQL |
+| [schema_mlflow_2.2.2.sql](database_schemas/mysql/schema_mlflow_2.2.2.sql) | MySQL |
+| [schema_mlflow_2.1.1.sql](database_schemas/mysql/schema_mlflow_2.1.1.sql) | MySQL |
+| [schema_mlflow_1.30.0.sql](database_schemas/mysql/schema_mlflow_1.30.0.sql) | MySQL |
+| [schema_mlflow_1.28.0.sql](database_schemas/mysql/schema_mlflow_1.28.0.sql) | MySQL |
+| [schema_mlflow_1.22.0.sql](database_schemas/mysql/schema_mlflow_1.22.0.sql) | MySQL |
+
 
 ## MLflow Java Client
 
