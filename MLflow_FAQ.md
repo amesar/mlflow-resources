@@ -356,6 +356,7 @@ Response
 
 |Version | Database |
 |-----|-------|
+| [schema_mlflow_2.9.2.sql](database_schemas/postgres/schema_mlflow_2.9.2.sql) | PostgreSQL |
 | [schema_mlflow_2.9.2.sql](database_schemas/sqlite/schema_mlflow_2.9.2.sql) | Sqlite |
 | [schema_mlflow_2.4.1.sql](database_schemas/mysql/schema_mlflow_2.4.1.sql) | MySQL |
 | [schema_mlflow_2.3.1.sql](database_schemas/mysql/schema_mlflow_2.3.1.sql) | MySQL |
