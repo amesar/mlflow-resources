@@ -1,19 +1,25 @@
 # MLflow FAQ
 
-Last updated: 2023-12-28.
+Last updated: 2024-05-09.
 
 ## General MLflow
 
-### How do I copy an experiment or run from one MLflow tracking server to another?
+### How do I copy an MLflow object from one MLflow tracking or registry server to another?
 
 I would like to:
-* Back up my experiments, runs or registered models.
-* Copy them into another MLflow tracking server (i.e. Databricks workspace).
+* Back up my registered models, model versions, experiments or runs.
+* Copy them to another MLflow tracking server (i.e. Databricks workspace).
 
-There is a tool that can export/import an experiment/run with caveats for Databricks MLflow using the [public MLflow API](https://mlflow.org/docs/latest/python_api/mlflow.client.html).
+The [mlflow-export-import](https://github.com/mlflow/mlflow-export-import) tool can handle these use case with caveats due to limitations in the MLflow and Databricks APIs.
 
-See https://github.com/mlflow/mlflow-export-import.
+Resource links: 
+* https://github.com/mlflow/mlflow-export-import
+* [Copy MLflow objects between workspaces](https://docs.databricks.com/en/mlflow/migrate-mlflow-objects.html) - Databricks documentation
+  * To import or export MLflow objects to or from your Databricks workspace, you can use the community-driven open source project MLflow Export-Import to migrate MLflow experiments, models, and runs between workspaces.
 
+### How do I backup up my MLflow objects?
+
+See above.
 
 ### How do I create an MLflow run from a model I have trained elsewhere?
 
@@ -59,7 +65,7 @@ Use this idiom:
 with mlflow.start_run() as run:
    run_id = run.info.run_id
 ```
-Instead of this: 
+Instead of this:
 ```
 with mlflow.start_run():
    run_id = mlflow.active_run().info.run_uuid
@@ -86,7 +92,7 @@ For a full-fledged version that accounts for nested runs see [Find best run for 
 
 ### How do I find the last run of an experiment?
 
-Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_runs) method. 
+Use the [MlflowClient.search_runs](https://mlflow.org/docs/latest/python_api/mlflow.client.html#mlflow.client.MlflowClient.search_runs) method.
 ```
 import mlflow
 client = mlflow.MlflowClient()
@@ -230,7 +236,7 @@ Total: bytes: 41282 artifacts: 7
 ### What are the MLflow system run tags?
 
 Overview
-* MLflow runs can be created in a various number of ways - OSS (as project or no project) or Databricks (job, notebook UI, Repo). 
+* MLflow runs can be created in a various number of ways - OSS (as project or no project) or Databricks (job, notebook UI, Repo).
 * MLflow runs can be created in a various number of ways:
   * Open source (OSS) - as project or no project.
   * Databricks - notebook UI,  notebook job or Databricks Repo.
@@ -352,7 +358,7 @@ Response
 [5.46875, 5.1716417910447765]
 ```
 
-### MLflow Database Schema 
+### MLflow Database Schema
 
 |Version | Database |
 |-----|-------|
@@ -384,15 +390,15 @@ Sample Scala code using the Java client: [github.com/amesar/mlflow-examples/tree
 
 ### MLflow Java Feature Gap
 
-* Since much of MLflow functionality is client-based and is written in Python, there is a feature gap for other languages.  
-* Standard MLflow features such as MLflow projects, models and  flavors are not supported for Java/Scala. 
-* This is principally due less demand for JVM-based ML training vs Python. 
+* Since much of MLflow functionality is client-based and is written in Python, there is a feature gap for other languages.
+* Standard MLflow features such as MLflow projects, models and  flavors are not supported for Java/Scala.
+* This is principally due less demand for JVM-based ML training vs Python.
 * You can save your native model as a raw artifact but cannot log it as a managed MLflow model.
-* See item below. 
+* See item below.
 
 ### Does the Java client support MLflow projects, moels  and flavors?
 
-No. With the Java client you have to save your models as un-managed artifacts using [logArtifact](https://mlflow.org/docs/latest/java_api/org/mlflow.client/MlflowClient.html#logArtifact-java.lang.String-java.io.File-). There is no concept of MLflow Python’s log_model (e.g. [mlflow.sklearn.log_model](https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html#mlflow.sklearn.log_model) which implies flavors. 
+No. With the Java client you have to save your models as un-managed artifacts using [logArtifact](https://mlflow.org/docs/latest/java_api/org/mlflow.client/MlflowClient.html#logArtifact-java.lang.String-java.io.File-). There is no concept of MLflow Python’s log_model (e.g. [mlflow.sklearn.log_model](https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html#mlflow.sklearn.log_model) which implies flavors.
 See example in [TrainWine.scala](https://github.com/amesar/mlflow-examples/blob/master/scala/sparkml/src/main/scala/org/andre/mlflow/examples/wine/sparkml/TrainWine.scala).
 
 ### Python set_experiment() equivalent
@@ -402,14 +408,14 @@ See [MLflowUtils.getOrCreateExperimentId](https://github.com/amesar/mlflow-examp
 ```
 // Return the ID of an experiment - create it if it doesn't exist
 def getOrCreateExperimentId(client: MlflowClient, experimentName: String) = {
-  try { 
+  try {
     client.createExperiment(experimentName)
-  } catch { 
+  } catch {
     case e: org.mlflow.client.MlflowHttpException => { // statusCode 400
       client.getExperimentByName(experimentName).get.getExperimentId
-    } 
-  } 
-} 
+    }
+  }
+}
 ```
 
 ### How do I score a model in Scala that was saved in Python?
@@ -435,7 +441,7 @@ Do the same as above using the Python `MlflowClient.download_artifacts` method.
 
 ### Searching for MLflow objects
 
-MLflow allows you to search for a subset of MLflow objects. The MLflow search filter is a simplified version of the SQL WHERE clause. 
+MLflow allows you to search for a subset of MLflow objects. The MLflow search filter is a simplified version of the SQL WHERE clause.
 
 You can search for the following MLflow objects:
 * Runs
@@ -468,23 +474,21 @@ Available now in MLflow 1.28.0.
 
 ## Databricks MLflow
 
-### How do I access Databricks MLflow from outside Databricks?
+### How do I externally access Databricks MLflow?
 
-There are several ways run the MLflow CLI or API against a managed Databricks MLflow tracking server.
-
-There are several ways to externally access managed Databricks MLflow. The following information applies to both the MLflow CLI and programmatic access.
+There are several ways to access a Databricks MLflow tracking server from outside Databricks.
 
 See the Databricks documentation page `Access the MLflow tracking server from outside Databricks` - [AWS](https://docs.databricks.com/applications/mlflow/access-hosted-tracking-server.html) or [Azure](https://docs.microsoft.com/en-us/azure/databricks/applications/mlflow/access-hosted-tracking-server).
 
-1. With .~/databrickscfg and no profile specified. The host and token are picked up from the DEFAULT profile.
+1. With `.~/databrickscfg` and no profile specified. The host and token are picked up from the DEFAULT profile.
 ```
 export MLFLOW_TRACKING_URI=databricks
 ```
-2. Specify profile in  ~/.databrickscfg.
+2. By specifying a profile in  `~/.databrickscfg`.
 ```
 export MLFLOW_TRACKING_URI=databricks://MY_PROFILE
 ```
-3. To override ~/.databrickscfg values or without ~/.databrickscfg file.
+3. Without using `~/.databrickscfg` file or to override `~/.databrickscfg` profiles.
 ```
 export MLFLOW_TRACKING_URI=databricks
 export DATABRICKS_HOST=https://myshard.cloud.databricks.com
@@ -524,7 +528,7 @@ tf.keras.models.save_model(model, "dbfs:/mymodel.keras")
 
 ### Specify non-DBFS artifact location for an experiment
 
-In Databricks MLflow, the default location for artifacts is DBFS. This location is specified at the experiment level. You can provide an alternate artifact location assuming there is a corresponding artifact plugin. 
+In Databricks MLflow, the default location for artifacts is DBFS. This location is specified at the experiment level. You can provide an alternate artifact location assuming there is a corresponding artifact plugin.
 
 There are two major limitations to custom non-DBFS locations:
 * The artifact will not appear in the UI.
@@ -604,6 +608,6 @@ Sample Databricks notebook: [Tracking ML Model Training with MLflow and Delta La
 * https://github.com/amesar/mleap-sampler - All things MLeap (with MLflow too)- Scala and Python.
 
 **Slides**
-* [MLflow Model Serving](https://databricks.com/session_na21/mlflow-model-serving) - DAIS 2021 - 2021-05-27 - [slideshare](https://www.slideshare.net/amesar0/mlflow-model-serving-dais-2021) 
+* [MLflow Model Serving](https://databricks.com/session_na21/mlflow-model-serving) - DAIS 2021 - 2021-05-27 - [slideshare](https://www.slideshare.net/amesar0/mlflow-model-serving-dais-2021)
 * [ONNX and MLflow](https://www.slideshare.net/amesar0/onnx-overview-and-mlflow) - Spark Meetup - 2020-02-26
 
