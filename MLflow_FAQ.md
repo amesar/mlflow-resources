@@ -1,6 +1,6 @@
 # MLflow FAQ
 
-Last updated: 2024-05-09.
+Last updated: 2024-05-28.
 
 ## General MLflow
 
@@ -362,6 +362,7 @@ Response
 
 |Version | Database |
 |-----|-------|
+| [schema_mlflow_2.13.0.sql](database_schemas/sqlite/schema_mlflow_2.13.0.sql) | Sqlite |
 | [schema_mlflow_2.9.2.sql](database_schemas/postgres/schema_mlflow_2.9.2.sql) | PostgreSQL |
 | [schema_mlflow_2.9.2.sql](database_schemas/sqlite/schema_mlflow_2.9.2.sql) | Sqlite |
 | [schema_mlflow_2.4.1.sql](database_schemas/mysql/schema_mlflow_2.4.1.sql) | MySQL |
